@@ -6,8 +6,10 @@ ARG stage
 
 LABEL NAME zsh-alacritty-app-$stage
 
+ENV USERNAME developer
+
 ENV PACKAGES bash \
-        git \
+  git \
   gcc \
   libc-dev \
   make \
@@ -21,32 +23,39 @@ ENV PACKAGES bash \
   zsh \
   jq
 
-ENV BATS_VERSION "1.1.0"
+ENV ZUNIT_VERSION "0.8.2"
 
 COPY Pipfile* /usr/src/
 
 # set working directory to /usr/src/
 WORKDIR /usr/src/
 
-RUN  groupadd -g 500 -r python \
-  && groupadd developer \
-  && useradd -m -g developer -G python developer \
-  && chown -R developer:python /usr/local/bin \
-  && mkdir -p /usr/src \
-  && chown -R developer /usr/src \
-
-# install packages
-  && apt-get update -y \
+RUN apt-get update -y \
   && apt-get install -y ${PACKAGES} --no-install-recommends \
-# bats
-  && curl -sSL https://github.com/bats-core/bats-core/archive/v${BATS_VERSION}.tar.gz -o /tmp/bats.tgz \
-  && tar -zxf /tmp/bats.tgz -C /tmp \
-  && /bin/bash /tmp/bats-core-${BATS_VERSION}/install.sh /usr/local \
-  && apt-get clean \
-  && apt-get autoremove \
 
+  # revolver
+  && curl -L https://raw.githubusercontent.com/molovo/revolver/master/revolver > /usr/local/bin/revolver \
+  && chmod +x /usr/local/bin/revolver \
+  # zunit
+  && curl -L https://github.com/zunit-zsh/zunit/releases/download/v${ZUNIT_VERSION}/zunit > /usr/local/bin/zunit \
+  && chmod +x /usr/local/bin/zunit \
+
+  # Permissions
+  && groupadd -g 500 -r python \
+  && groupadd ${USERNAME} \
+  && useradd -m -g ${USERNAME} -G python ${USERNAME} \
+  && chown -R ${USERNAME}:python /usr/local/bin \
+  && su ${USERNAME} \
+  && mkdir -p /usr/src \
+  && chown -R ${USERNAME} /usr/src \
+
+  # python
   && pip3 install pipenv \
   && pipenv install --dev --skip-lock \
   && pipenv shell --fancy \
+
+  # clean
+  && apt-get clean \
+  && apt-get autoremove \
   && apt-get purge \
   && rm -rf /var/lib/apt/lists/*
