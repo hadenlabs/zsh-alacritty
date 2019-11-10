@@ -19,6 +19,7 @@ ENV PACKAGES bash \
   libgdal20 \
   libev-dev \
   curl \
+  wget \
   tar \
   zsh \
   jq
