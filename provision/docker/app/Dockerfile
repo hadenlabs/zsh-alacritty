@@ -15,7 +15,13 @@ ENV PACKAGES bash \
   openssl \
   gcc \
   libgdal20 \
-  libev-dev
+  libev-dev \
+  curl \
+  tar \
+  zsh \
+  jq
+
+ENV BATS_VERSION "1.1.0"
 
 COPY Pipfile* /usr/src/
 
@@ -32,6 +38,10 @@ RUN  groupadd -g 500 -r python \
 # install packages
   && apt-get update -y \
   && apt-get install -y ${PACKAGES} --no-install-recommends \
+# bats
+  && curl -sSL https://github.com/bats-core/bats-core/archive/v${BATS_VERSION}.tar.gz -o /tmp/bats.tgz \
+  && tar -zxf /tmp/bats.tgz -C /tmp \
+  && /bin/bash /tmp/bats-core-${BATS_VERSION}/install.sh /usr/local \
   && apt-get clean \
   && apt-get autoremove \
 
