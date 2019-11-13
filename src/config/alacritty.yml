@@ -358,5 +358,5 @@ draw_bold_text_with_bright_colors: false
 # You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
 # Entries in shell.args are passed unmodified as arguments to the shell.
 #
-shell:
-  program: /usr/local/bin/zsh
+# shell:
+# program: /usr/local/bin/zsh
