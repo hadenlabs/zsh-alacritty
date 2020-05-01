@@ -8,17 +8,21 @@
 #   Luis Mayta <slovacus@gmail.com>
 #
 
-ZSH_ALACRITTY_PATH_ROOT=$(dirname "${0}":A)
-
 alacritty_package_name=alacritty
+
+ZSH_ALACRITTY_PATH_ROOT=$(dirname "${0}")
 
 ALACRITTY_OSX_APPLICATION=/Applications/Alacritty.app
 ALACRITTY_CONF_DIR=${HOME}/.config/alacritty
 ALACRITTY_THEMES_DIR=${ALACRITTY_CONF_DIR}/themes
+ALACRITTY_MESSAGE_BREW="Please install brew or use antibody bundle luismayta/zsh-brew branch:develop"
 
 function alacritty::exist {
-    if [ -e "${ALACRITTY_OSX_APPLICATION}" ]; then return 1; fi
-    return 0
+    if [ -e "${ALACRITTY_OSX_APPLICATION}" ]; then
+        echo 1
+        return 1
+    fi
+    echo 0
 }
 
 function alacritty::sync {
@@ -33,7 +37,8 @@ function alacritty::post_install {
 
 function rsync::install {
     if ! type -p brew > /dev/null; then
-        message_error "it's neccesary brew, add: luismayta/zsh-brew"
+        message_warning "${ALACRITTY_MESSAGE_BREW}"
+        return
     fi
     message_info "Installing rsync for ${alacritty_package_name}"
     brew install rsync
@@ -53,9 +58,9 @@ function alacritty::list_themes {
         message_info "=== your available themes ==="
         message_info "-----------------------------"
         ls -1 "${ALACRITTY_THEMES_DIR}"/*.yaml|sed -r 's/(.*)\/(.*).yaml/    \2/g'
-    else
-        message_info "=== sorry no themes, use fn: fetch_themes ==="
+        return 1
     fi
+    message_info "=== sorry no themes, use fn: list_themes ==="
 }
 
-if [ ! "$alacritty::exist" ]; then alacritty::install; fi
+if [ "$(alacritty::exist)" -eq 0 ]; then alacritty::install; fi
