@@ -63,113 +63,180 @@ scrolling:
   # scrollback is enabled (history > 0).
   multiplier: 3
 
-  # Faux Scrolling
-  #
-  # The `faux_multiplier` setting controls the number of lines the terminal
-  # should scroll when the alternate screen buffer is active. This is used to
-  # allow mouse scrolling for applications like `man`.
-  #
-  # Specifying `0` will disable faux scrolling.
-  faux_multiplier: 3
-
-  # Scroll to the bottom when new text is written to the terminal.
-  auto_scroll: false
-
-# Display tabs using this many cells (changes require restart)
-#
-# Some applications, like Emacs, rely on knowing about the width of a tab. To
-# prevent unexpected behavior in these applications, it's also required to
-# change the `it` value in terminfo when altering this setting.
-#
-tabspaces: 2
-
-# Font configuration (changes require restart)
 font:
-  # The normal (roman) font face to use.
-  # Style can be specified to pick a specific face.
   normal:
-    family: 'Fira Code'
-    # family: "Source Code Pro"
+    family: FuraCode Nerd Font Mono
+    # Style can be specified to pick a specific face.
     style: Retina
 
   # The bold font face
   bold:
-    family: 'Fira Code'
-    # family: "Source Code Pro"
+    family: FuraCode Nerd Font Mono
+    # Style can be specified to pick a specific face.
     style: Bold
 
   # The italic font face
   italic:
-    # family: "Fira Code"
-    family: 'Fira Code Pro'
-    style: 'Medium Italic'
+    family: FuraCode Nerd Font Mono
+    # Style can be specified to pick a specific face.
+    style: Italic
 
   # Point size of the font
-  size: 16.0
+  size: 19
 
-  # Offset is the extra space around each character. offset.y can be thought of
-  # as modifying the linespacing, and offset.x as modifying the letter spacing.
-  offset:
-    x: 0
-    y: 0
+  # Use custom cursor colors. If true, display the cursor in the cursor.foreground
+  # and cursor.background colors, otherwise invert the colors of the cursor.
+  # custom_cursor_colors: false
 
-  # Glyph offset determines the locations of the glyphs within their cells with
-  # the default being at the bottom. Increase the x offset to move the glyph to
-  # the right, increase the y offset to move the glyph upward.
-  glyph_offset:
-    x: 0
-    y: 0
-
-  # Thin stroke font rendering (macOS only)
-  #
-  # Thin strokes are suitable for retina displays, but for non-retina you
-  # probably want this set to false.
-  #
-  # macOS >= 10.14.x:
-  #
-  # If the font quality on non-retina display looks bad then set
-  # `use_thin_strokes` to `true` and enable font smoothing by running the
-  # following command:
-  #   `defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO`
-  #
-  # This is a global setting and will require a log out or restart to take
-  # effect.
-  use_thin_strokes: true
-
-# Use custom cursor colors. If true, display the cursor in the cursor.foreground
-# and cursor.background colors, otherwise invert the colors of the cursor.
-# custom_cursor_colors: false
+# Colors -----------------------------------------------------------------------
 
 # begin_theme
 
-# Colors (Nord)
-colors:
-  # Default colors
-  primary:
-    background: '0x2E3440'
-    foreground: '0xD8DEE9'
+schemes:
+  dracula: &dracula # Default colors
+    primary:
+      background: '0x282a36'
+      foreground: '0xf8f8f2'
 
-  # Normal colors
-  normal:
-    black: '0x3B4252'
-    red: '0xBF616A'
-    green: '0xA3BE8C'
-    yellow: '0xEBCB8B'
-    blue: '0x81A1C1'
-    magenta: '0xB48EAD'
-    cyan: '0x88C0D0'
-    white: '0xE5E9F0'
+      # Bright and dim foreground colors
+      #
+      # The dimmed foreground color is calculated automatically if it is not present.
+      # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+      # is `false`, the normal foreground color will be used.
+      #dim_foreground: '0x9a9a9a'
+      #bright_foreground: '0xffffff'
 
-  # Bright colors
-  bright:
-    black: '0x4C566A'
-    red: '0xBF616A'
-    green: '0xA3BE8C'
-    yellow: '0xEBCB8B'
-    blue: '0x81A1C1'
-    magenta: '0xB48EAD'
-    cyan: '0x8FBCBB'
-    white: '0xECEFF4'
+    # Cursor colors
+    #
+    # Colors which should be used to draw the terminal cursor. If these are unset,
+    # the cursor color will be the inverse of the cell color.
+    cursor:
+      text: '0x44475a'
+      cursor: '0xf8f8f2'
+
+    # Normal colors
+    normal:
+      black: '0x000000'
+      red: '0xff5555'
+      green: '0x50fa7b'
+      yellow: '0xf1fa8c'
+      blue: '0xbd93f9'
+      magenta: '0xff79c6'
+      cyan: '0x8be9fd'
+      white: '0xbfbfbf'
+
+    # Bright colors
+    bright:
+      black: '0x4d4d4d'
+      red: '0xff6e67'
+      green: '0x5af78e'
+      yellow: '0xf4f99d'
+      blue: '0xcaa9fa'
+      magenta: '0xff92d0'
+      cyan: '0x9aedfe'
+      white: '0xe6e6e6'
+
+    # Dim colors
+    #
+    # If the dim colors are not set, they will be calculated automatically based
+    # on the `normal` colors.
+    dim:
+      black: '0x14151b'
+      red: '0xff2222'
+      green: '0x1ef956'
+      yellow: '0xebf85b'
+      blue: '0x4d5b86'
+      magenta: '0xff46b0'
+      cyan: '0x59dffc'
+      white: '0xe6e6d1'
+
+    # Indexed Colors
+    #
+    # The indexed colors include all colors from 16 to 256.
+    # When these are not set, they're filled with sensible defaults.
+    #
+    # Example:
+    #   `- { index: 16, color: '0xff00ff' }`
+    #
+    indexed_colors: []
+
+  nord: &nord
+    primary:
+      background: '0x2E3440'
+      foreground: '0xD8DEE9'
+    cursor:
+      text: '0x2E3440'
+      cursor: '0xD8DEE9'
+    normal:
+      black: '0x3B4252'
+      red: '0xBF616A'
+      green: '0xA3BE8C'
+      yellow: '0xEBCB8B'
+      blue: '0x81A1C1'
+      magenta: '0xB48EAD'
+      cyan: '0x88C0D0'
+      white: '0xE5E9F0'
+    bright:
+      black: '0x4C566A'
+      red: '0xBF616A'
+      green: '0xA3BE8C'
+      yellow: '0xEBCB8B'
+      blue: '0x81A1C1'
+      magenta: '0xB48EAD'
+      cyan: '0x8FBCBB'
+      white: '0xECEFF4'
+
+  ayu_mirage: &ayu_mirage
+    primary:
+      background: '0x212733'
+      foreground: '0xd0cec3'
+    normal:
+      black: '0x212733'
+      red: '0xea5965'
+      green: '0xade46b'
+      yellow: '0xfec254'
+      blue: '0x2d91d0'
+      magenta: '0xc9aeff'
+      cyan: '0x86e2bf'
+      white: '0xbbbbbb'
+    bright:
+      black: '0x555555'
+      red: '0xea5965'
+      green: '0xc1e436'
+      yellow: '0xfed96d'
+      blue: '0x5555ff'
+      magenta: '0xff55ff'
+      cyan: '0x99ffda'
+      white: '0xffffff'
+
+  challenger_deep: &challenger_deep # Default colors
+    primary:
+      background: '0x1b182c'
+      foreground: '0xcbe3e7'
+
+    # Normal colors
+    normal:
+      black: '0x100e23'
+      red: '0xff8080'
+      green: '0x95ffa4'
+      yellow: '0xffe9aa'
+      blue: '0x91ddff'
+      magenta: '0xc991e1'
+      cyan: '0xaaffe4'
+      white: '0xcbe3e7'
+
+    # Bright colors
+    bright:
+      black: '0x565575'
+      red: '0xff5458'
+      green: '0x62d196'
+      yellow: '0xffb378'
+      blue: '0x65b2ff'
+      magenta: '0x906cff'
+      cyan: '0x63f2f1'
+      white: '0xa6b3cc'
+
+colors: *challenger_deep
 
 # end_theme
 
@@ -208,7 +275,7 @@ visual_bell:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.0
+background_opacity: 1.1
 
 # Mouse bindings
 #
@@ -345,10 +412,6 @@ debug.render_timer: false
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: false
-# visual_bell:
-#   animation: EaseOutExpo
-#   duration: 1
-
 # Shell
 #
 # You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
