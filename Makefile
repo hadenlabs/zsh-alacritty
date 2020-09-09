@@ -17,17 +17,18 @@ else
 	PIPENV_INSTALL:=
 endif
 
-TEAM := private
+TEAM :=luismayta
 REPOSITORY_DOMAIN:=github.com
-REPOSITORY_OWNER:=luismayta
-AWS_VAULT ?= luismayta
-KEYBASE_OWNER ?= luismayta
+REPOSITORY_OWNER:=${TEAM}
+AWS_VAULT ?= ${TEAM}
+KEYBASE_OWNER ?= ${TEAM}
+KEYBASE_PATH_TEAM_NAME ?=private
 PROJECT := zsh-alacritty
 PROJECT_PORT := 3000
 
 PYTHON_VERSION=3.8.0
-NODE_VERSION=v12.14.1
-TERRAFORM_VERSION=0.12.20
+NODE_VERSION=12.14.1
+TERRAFORM_VERSION=0.13.1
 PYENV_NAME="${PROJECT}"
 
 # Configuration.
@@ -39,7 +40,8 @@ SOURCE_DIR=$(ROOT_DIR)/
 PROVISION_DIR:=$(ROOT_DIR)/provision
 FILE_README:=$(ROOT_DIR)/README.rst
 KEYBASE_VOLUME_PATH ?= /Keybase
-KEYBASE_PATH ?= ${KEYBASE_VOLUME_PATH}/${TEAM}/${KEYBASE_OWNER}/${REPOSITORY_DOMAIN}/${REPOSITORY_OWNER}/${PROJECT}
+KEYBASE_TEAM_PATH ?=${KEYBASE_VOLUME_PATH}/${KEYBASE_PATH_TEAM_NAME}/${KEYBASE_OWNER}
+KEYBASE_PROJECT_PATH ?= ${KEYBASE_TEAM_PATH}/${REPOSITORY_DOMAIN}/${REPOSITORY_OWNER}/${PROJECT}
 
 PATH_DOCKER_COMPOSE:=docker-compose.yml -f provision/docker-compose
 
@@ -53,9 +55,8 @@ docker-dev:=$(docker-compose) -f ${PATH_DOCKER_COMPOSE}/dev.yml
 
 docker-test-run:=$(docker-test) run --rm ${DOCKER_SERVICE_TEST}
 docker-dev-run:=$(docker-dev) run --rm --service-ports ${DOCKER_SERVICE_DEV}
-
+docker-yarn-run:=$(docker-dev) run --rm --service-ports ${DOCKER_SERVICE_YARN}
 terragrunt:=terragrunt
-
 include provision/make/*.mk
 
 help:
@@ -70,21 +71,38 @@ help:
 	@make test.help
 	@make keybase.help
 	@make utils.help
+	@make python.help
+	@make yarn.help
 
 setup:
 	@echo "=====> install packages..."
-	pyenv local ${PYTHON_VERSION}
-	yarn
-	$(PIPENV_INSTALL) --dev --skip-lock
-	$(PIPENV_RUN) pre-commit install
-	$(PIPENV_RUN) pre-commit install -t pre-push
+	make python.setup
+	make python.precommit
+	make yarn.setup
 	@cp -rf provision/git/hooks/prepare-commit-msg .git/hooks/
 	@[ -e ".env" ] || cp -rf .env.example .env
+	make keybase.setup
 	@echo ${MESSAGE_HAPPY}
 
 environment:
 	@echo "=====> loading virtualenv ${PYENV_NAME}..."
-	pyenv local ${PYTHON_VERSION}
-	make keybase.setup
-	@pipenv --venv || $(PIPENV_INSTALL) --python=${PYTHON_VERSION} --skip-lock
+	make python.environment
+	make keybase.environment
 	@echo ${MESSAGE_HAPPY}
+
+.PHONY: clean
+clean:
+	@rm -f ./dist.zip
+	@rm -fr ./vendor
+
+# Show to-do items per file.
+todo:
+	@grep \
+		--exclude-dir=vendor \
+		--exclude-dir=node_modules \
+		--exclude-dir=bin \
+		--exclude=Makefile \
+		--text \
+		--color \
+		-nRo -E ' TODO:.*|SkipNow|FIXMEE:.*' .
+.PHONY: todo
