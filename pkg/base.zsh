@@ -3,7 +3,7 @@
 
 function alacritty::sync {
     message_info "Alacritty sync conf for ${ALACRITTY_PACKAGE_NAME}"
-    rsync -avzh --progress "${ZSH_ALACRITTY_SRC_PATH}/conf/" "${ALACRITTY_CONF_DIR}/"
+    rsync -avzh --progress "${ZSH_ALACRITTY_PATH}/conf/" "${ALACRITTY_CONF_DIR}/"
     message_success "sync for ${ALACRITTY_PACKAGE_NAME}"
 }
 
