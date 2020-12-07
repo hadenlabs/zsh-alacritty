@@ -3,15 +3,15 @@
 
 function alacritty::core::main::factory {
     # shellcheck source=/dev/null
-    source "${ZSH_ALACRITTY_SRC_PATH}"/core/base.zsh
+    source "${ZSH_ALACRITTY_PATH}"/core/base.zsh
     case "${OSTYPE}" in
     darwin*)
         # shellcheck source=/dev/null
-        source "${ZSH_ALACRITTY_SRC_PATH}"/core/osx.zsh
+        source "${ZSH_ALACRITTY_PATH}"/core/osx.zsh
         ;;
     linux*)
         # shellcheck source=/dev/null
-        source "${ZSH_ALACRITTY_SRC_PATH}"/core/linux.zsh
+        source "${ZSH_ALACRITTY_PATH}"/core/linux.zsh
       ;;
     esac
 }
