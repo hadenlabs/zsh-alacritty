@@ -93,7 +93,6 @@ font:
 # begin_theme
 
 schemes:
-
   dracula: &dracula # Default colors
     primary:
       background: '0x282a36'
