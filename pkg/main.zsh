@@ -24,4 +24,4 @@ function alacritty::pkg::main::factory {
 
 alacritty::pkg::main::factory
 
-if [ "$(alacritty::core::alacritty::exist)" -eq 0 ]; then alacritty::install; fi
+if ! core::exists alacritty; then alacritty::install; fi
