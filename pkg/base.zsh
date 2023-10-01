@@ -12,13 +12,3 @@ function alacritty::install {
     brew cask install alacritty
     alacritty::post_install
 }
-
-function alacritty::list_themes {
-    if [ -e "${ALACRITTY_THEMES_DIR}" ]; then
-        message_info "=== your available themes ==="
-        message_info "-----------------------------"
-        ls -1 "${ALACRITTY_THEMES_DIR}"/*.yaml|sed -r 's/(.*)\/(.*).yaml/    \2/g'
-        return 1
-    fi
-    message_info "=== sorry no themes, use fn: list_themes ==="
-}
