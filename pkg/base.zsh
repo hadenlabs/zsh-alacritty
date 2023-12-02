@@ -9,6 +9,5 @@ function alacritty::sync {
 
 function alacritty::install {
     message_info "Installing Alacritty"
-    brew cask install alacritty
-    alacritty::post_install
+    brew install --cask alacritty
 }
