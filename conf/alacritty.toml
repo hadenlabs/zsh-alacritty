@@ -1,0 +1,5 @@
+[general]
+import = [
+  "/Volumes/Data/luchomayta/.config/alacritty/core.toml",
+  "/Volumes/Data/luchomayta/.config/alacritty/themes/catppuccin/catppuccin-mocha.toml",
+]

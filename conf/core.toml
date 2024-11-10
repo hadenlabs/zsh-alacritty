@@ -1,0 +1,45 @@
+[general]
+live_config_reload = true
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[env]
+TERM = "xterm-256color"
+decorations = "full"
+startup_mode = "Maximized"
+
+[font]
+size = 19.0
+normal.family = "FiraCode Nerd Font Mono"
+bold.family = "FiraCode Nerd Font Mono"
+italic.family = "FiraCode Nerd Font Mono"
+bold_italic.family = "FiraCode Nerd Font Mono"
+
+[mouse]
+hide_when_typing = false
+
+[scrolling]
+history = 10000
+
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ''',│`|:"' ()[]{}<>'''
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[window]
+opacity = 0.8
+
+padding.x = 4
+padding.y = 4
+
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+[cursor]
+style = "Block"
+unfocused_hollow = true
+vi_mode_style = "Beam"
