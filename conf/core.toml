@@ -11,11 +11,11 @@ decorations = "full"
 startup_mode = "Maximized"
 
 [font]
-size = 19.0
-normal.family = "FiraCode Nerd Font Mono"
-bold.family = "FiraCode Nerd Font Mono"
-italic.family = "FiraCode Nerd Font Mono"
-bold_italic.family = "FiraCode Nerd Font Mono"
+size = 20.0
+normal.family = "FiraCode Nerd Font"
+bold.family = "FiraCode Nerd Font"
+italic.family = "FiraCode Nerd Font"
+bold_italic.family = "FiraCode Nerd Font"
 
 [mouse]
 hide_when_typing = false
